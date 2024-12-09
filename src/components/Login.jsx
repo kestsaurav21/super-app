@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 const LoginContainer = styled.div`
@@ -93,20 +93,65 @@ const Terms = styled.p`
   }
 `
 
+const Warning = styled.p`
+  font-family: "DM Sans", sans-serif;
+  color: #FF0000;
+  font-size: 12px;
+  margin-bottom: 0.5rem;
+  text-align: justify;  
+  `
+
 const Login = () => {
+
+    const [formData , setFormData] = useState({
+        name: '',
+        username: '',
+        email: '',
+        mobile: '',
+    })
+
+    const [isChecked, setIsChecked] = useState(false);
+
+
+    const [error , setError] = useState(false);
+
+
+
+
+    const handleChange = (e) => {
+        setFormData((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setError(false);
+
+        if(formData.name === '' || formData.username === '' || formData.email === '' || formData.mobile === ''){
+            setError(true);
+        }
+        
+    }
   return (
     <LoginContainer>
         <Header>Super App</Header>
         <Text>Create your new account</Text>
 
-        <Form >
-            <Input type="text" placeholder="Name" />
-            <Input type="text" placeholder='Username' />
-            <Input type="text" placeholder='Email' />
-            <Input type="mobile" placeholder='Mobile' />
+        <Form onSubmit={handleSubmit} >
+            <Input type="text" placeholder="Name" name="name" value={formData.name} onChange={handleChange} />
+            {error && <Warning>Please fill all the fields</Warning>}
+            <Input type="text" placeholder='Username' name="username" value={formData.username} onChange={handleChange} />
+            {error && <Warning>Please fill all the fields</Warning>}
+            <Input type="text" placeholder='Email' name="email" value={formData.email} onChange={handleChange} />
+            {error && <Warning>Please fill all the fields</Warning>}
+            <Input type="mobile" placeholder='Mobile' name="mobile" value={formData.mobile} onChange={handleChange} />
+            {error && <Warning>Please fill all the fields</Warning>}
 
             <CheckBox>
-                <input type="checkbox" />
+                <input type="checkbox" name='terms' value={isChecked} onChange={() => isChecked ? setIsChecked(false) : setIsChecked(true)} />
                 <CheckBoxTerm className="check_box">
                     Share my registration data with Superapp
                 </CheckBoxTerm>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const LoginContainer = styled.div`
@@ -103,6 +104,8 @@ const Warning = styled.p`
 
 const Login = () => {
 
+    const navigate = useNavigate();
+
     const [formData , setFormData] = useState({
         name: '',
         username: '',
@@ -132,7 +135,12 @@ const Login = () => {
 
         if(formData.name === '' || formData.username === '' || formData.email === '' || formData.mobile === ''){
             setError(true);
+        }else{
+          setError(false);
+          isChecked && navigate('/category')
         }
+
+        
         
     }
   return (

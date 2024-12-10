@@ -1,15 +1,6 @@
 import React from 'react'
-import movieCategory from '../utils/movieCategory'
 import styled from 'styled-components'
 
-
-const CardContainer = styled.div`
-  display : grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 60vw;
-  height: 100vh;
-  padding: 5rem;
-  `
 
 const Card = styled.div`
   width: 10rem;
@@ -38,17 +29,37 @@ const CardText = styled.p`
 `
 
 
-const MovieGrid = () => {
-  return (
-    <CardContainer >
-        {movieCategory.map((item) => (
-            <Card key={item.id} style={{background: item.backgroundColor}}>
+const MovieGrid = ({ genre, selected, setSelected }) => {
 
-                <CardText>{item.label}</CardText>
-                <CardImage src={item.image} alt='movie' />
+  const handleSelection = () => {
+
+    if(selected.includes(genre.value)){
+      setSelected(selected.filter((item) => item !== genre.value))
+    }else{
+      setSelected([...selected, genre.value])
+    }
+
+  }
+
+  const generateBorder = (value) => {
+    if(selected.includes(value)){
+      return "4px solid green"
+    }
+    else{
+      return "none"
+    }
+  }
+
+  return (
+            <Card style={{background: genre.backgroundColor,
+              border: generateBorder(genre.value)
+            }}
+            onClick={handleSelection}
+            >
+                <CardText>{genre.label}</CardText>
+                <CardImage src={genre.image} alt='movie' />
             </Card>
-        ))}
-    </CardContainer>
+      
   )
 }
 
